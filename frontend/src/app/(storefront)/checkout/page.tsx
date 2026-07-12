@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getAuthToken, getServerSession } from "@/lib/auth";
+import { getAuthToken, getServerSession, hasStaffRole } from "@/lib/auth";
 import { serverApiFetch } from "@/lib/api";
 import type { CustomerDto, ShippingZoneDto } from "@/lib/types";
 import { CheckoutForm } from "@/components/storefront/CheckoutForm";
@@ -7,6 +7,7 @@ import { CheckoutForm } from "@/components/storefront/CheckoutForm";
 export default async function CheckoutPage() {
   const session = await getServerSession();
   if (!session) redirect("/login?redirectTo=/checkout");
+  if (hasStaffRole(session)) redirect("/admin");
 
   const token = await getAuthToken();
 
