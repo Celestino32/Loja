@@ -1,0 +1,53 @@
+# ─── Claude Code (configuração local do agente) ──────────────────────────────
+.claude/
+
+# ─── Segredos e configuração local ──────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.local
+
+# ─── .NET / ASP.NET Core ─────────────────────────────────────────────────────
+# appsettings.Development.json contém credenciais de dev — não versionar
+**/appsettings.Development.json
+**/bin/
+**/obj/
+**/*.user
+**/*.suo
+**/.vs/
+**/launchSettings.json
+*.nupkg
+*.snupkg
+*.nuspec
+.nuget/
+packages/
+TestResults/
+
+# ─── Next.js / Node ──────────────────────────────────────────────────────────
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.turbo/
+frontend/.pnp
+frontend/.pnp.js
+
+# ─── Docker volumes / uploads locais ─────────────────────────────────────────
+uploads/
+pgdata/
+
+# ─── Editores e IDEs ─────────────────────────────────────────────────────────
+.vs/
+.vscode/
+*.swp
+*.swo
+.idea/
+*.iml
+*.DS_Store
+Thumbs.db
+
+# ─── Logs ────────────────────────────────────────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/LojaVirtual.Api/LojaVirtual.Api.csproj" />
+    <Project Path="src/LojaVirtual.Application/LojaVirtual.Application.csproj" />
+    <Project Path="src/LojaVirtual.Domain/LojaVirtual.Domain.csproj" />
+    <Project Path="src/LojaVirtual.Infrastructure/LojaVirtual.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/LojaVirtual.IntegrationTests/LojaVirtual.IntegrationTests.csproj" />
+    <Project Path="tests/LojaVirtual.UnitTests/LojaVirtual.UnitTests.csproj" />
+  </Folder>
+</Solution>

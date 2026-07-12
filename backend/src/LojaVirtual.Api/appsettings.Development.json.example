@@ -1,0 +1,21 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5432;Database=lojavirtual;Username=lojavirtual;Password=lojavirtual_dev_pwd"
+  },
+  "Jwt": {
+    "Secret": "dev-only-secret-key-nao-usar-em-producao-troque-isto-1234567890",
+    "Issuer": "LojaVirtual.Api",
+    "Audience": "LojaVirtual.Clients",
+    "AccessTokenExpirationMinutes": 60
+  },
+  "SeedAdmin": {
+    "Email": "admin@lojavirtual.ao",
+    "Password": "Trocar@123!"
+  }
+}

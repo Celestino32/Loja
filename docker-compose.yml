@@ -1,0 +1,68 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-lojavirtual}
+      POSTGRES_USER: ${POSTGRES_USER:-lojavirtual}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-lojavirtual_dev_pwd}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-lojavirtual} -d ${POSTGRES_DB:-lojavirtual}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${POSTGRES_DB:-lojavirtual};Username=${POSTGRES_USER:-lojavirtual};Password=${POSTGRES_PASSWORD:-lojavirtual_dev_pwd}"
+      Jwt__Secret: ${JWT_SECRET:-dev-only-secret-key-nao-usar-em-producao-troque-isto-1234567890}
+      Jwt__Issuer: LojaVirtual.Api
+      Jwt__Audience: LojaVirtual.Clients
+      SeedAdmin__Email: ${SEED_ADMIN_EMAIL:-admin@lojavirtual.ao}
+      SeedAdmin__Password: ${SEED_ADMIN_PASSWORD:-Trocar@123!}
+      Cors__AllowedOrigins__0: ${FRONTEND_ORIGIN:-http://localhost:3000}
+      FileStorage__RootPath: /app/uploads
+    ports:
+      - "5050:8080"
+    volumes:
+      - api_uploads:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:5050}
+        NEXT_PUBLIC_WHATSAPP_NUMBER: ${NEXT_PUBLIC_WHATSAPP_NUMBER:-}
+    restart: unless-stopped
+    environment:
+      API_INTERNAL_URL: http://api:8080
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    profiles: ["tools"]
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@lojavirtual.ao
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5433:80"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+  api_uploads:
