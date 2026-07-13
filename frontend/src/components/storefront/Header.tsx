@@ -1,9 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { serverApiFetch } from "@/lib/api";
 import { getServerSession, hasStaffRole } from "@/lib/auth";
-import { resolveMediaUrl } from "@/lib/media";
-import { getStoreSettings } from "@/lib/settings";
 import type { CategoryDto } from "@/lib/types";
 import { CartBadge } from "./CartBadge";
 import { LogoutButton } from "./LogoutButton";
@@ -18,12 +15,10 @@ async function getCategories(): Promise<CategoryDto[]> {
 }
 
 export async function Header() {
-  const [categories, session, settings] = await Promise.all([
+  const [categories, session] = await Promise.all([
     getCategories(),
     getServerSession(),
-    getStoreSettings(),
   ]);
-  const logoUrl = resolveMediaUrl(settings.logoUrl);
 
   return (
     <header className="sticky top-0 z-30 bg-white dark:bg-zinc-950">
@@ -31,11 +26,7 @@ export async function Header() {
       <div className="border-b border-zinc-200 dark:border-zinc-800">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-3 sm:flex-nowrap sm:gap-6 sm:px-6">
           <Link href="/" className="order-1 shrink-0 rounded-md bg-white px-2 py-1.5 shadow-sm">
-            {logoUrl ? (
-              <Image src={logoUrl} alt={settings.storeName} width={190} height={41} priority className="h-9 w-auto" unoptimized />
-            ) : (
-              <span className="block px-1 text-xl font-bold tracking-tight text-zinc-900">{settings.storeName}</span>
-            )}
+            <span className="block px-1 text-xl font-bold tracking-tight text-zinc-900">CELSTORE</span>
           </Link>
 
           <div className="order-3 w-full sm:order-2 sm:max-w-xl sm:flex-1">

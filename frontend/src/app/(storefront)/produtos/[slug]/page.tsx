@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import { ApiError, serverApiFetch } from "@/lib/api";
 import { formatKwanza } from "@/lib/format";
-import { resolveMediaUrl } from "@/lib/media";
 import type { ProductDto } from "@/lib/types";
 import { AddToCartButton } from "@/components/storefront/AddToCartButton";
+import { ProductImageCarousel } from "@/components/storefront/ProductImageCarousel";
 import { ProductReviews } from "@/components/storefront/ProductReviews";
 
 interface ProdutoPageProps {
@@ -26,23 +26,11 @@ export default async function ProdutoPage({ params }: ProdutoPageProps) {
   if (!product) notFound();
 
   const inStock = product.stockQuantity > 0;
-  const imageUrl = resolveMediaUrl(product.images[0]?.url);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <div className="grid gap-10 md:grid-cols-2">
-        <div className="flex aspect-square items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800">
-          {imageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={imageUrl}
-              alt={product.name}
-              className="h-full w-full rounded-lg object-cover"
-            />
-          ) : (
-            <span className="text-lg text-zinc-400">{product.brand}</span>
-          )}
-        </div>
+        <ProductImageCarousel images={product.images} fallbackLabel={product.brand} alt={product.name} />
 
         <div>
           {product.categoryName && (
